@@ -21,6 +21,7 @@ function HomePage(props: any) {
 // Runs invisible code to the user (doesn't run on client side)
 // Is executed on build
 export async function getStaticProps() {
+  console.log("Re-generated");
   // Is asynchronous because we imported fs/promises
   // cwd = Current Working Directory
   // process.cwd() givew the cwd of the current file
@@ -30,10 +31,31 @@ export async function getStaticProps() {
   const JSONdata = await fs.readFile(filePath);
   const data = JSON.parse(JSONdata.toString());
 
+  // Case if there is no data
+  if (!data) {
+    // Automatically redirect to another route
+    return {
+      redirect: {
+        destination: "/no-data",
+      },
+    };
+  }
+
+  // Case if there is no fetched data
+  if (data.products.length === 0) {
+    return { notFound: true };
+  }
+
   return {
     props: {
       products: data?.products,
     },
+    // Time period for every refrech by NextJS for every incoming request
+    // 10 means re-generated every 10s
+    revalidate: 10,
+    // If notFound: true, the page will return a 404 page
+    // Usefull if we can't fetch the data
+    notFound: false,
   };
 }
 
