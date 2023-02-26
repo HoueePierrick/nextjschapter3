@@ -3,6 +3,7 @@ import React from "react";
 import fs from "fs/promises";
 // Module helping to build path
 import path from "path";
+import Link from "next/link";
 
 function HomePage(props: any) {
   const { products } = props;
@@ -10,7 +11,11 @@ function HomePage(props: any) {
   return (
     <ul>
       {products.map((product: any) => {
-        return <li key={product.id}>{product.title}</li>;
+        return (
+          <li key={product.id}>
+            <Link href={`/${product.id}`}>{product.title}</Link>
+          </li>
+        );
       })}
     </ul>
   );
