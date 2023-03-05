@@ -62,7 +62,7 @@ function LastSalesPage(props: any) {
   }
   // if (isLoading) {
   // if no data is equal to isLoading
-  if (!data || !sales) {
+  if (!data && !sales) {
     return <p>Loading...</p>;
   }
   // if (!sales) {
